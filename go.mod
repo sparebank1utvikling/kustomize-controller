@@ -1,6 +1,6 @@
 module github.com/fluxcd/kustomize-controller
 
-go 1.22.5
+go 1.22.8
 
 replace github.com/fluxcd/kustomize-controller/api => ./api
 
@@ -47,8 +47,8 @@ require (
 
 // Pin kustomize to v5.4.3
 replace (
-	sigs.k8s.io/kustomize/api => sigs.k8s.io/kustomize/api v0.17.3
-	sigs.k8s.io/kustomize/kyaml => sigs.k8s.io/kustomize/kyaml v0.17.2
+	sigs.k8s.io/kustomize/api => github.com/chlunde/kustomize/api v0.0.0-20241007194522-e5d19a7c5738
+	sigs.k8s.io/kustomize/kyaml => github.com/chlunde/kustomize/kyaml v0.0.0-20241007194522-e5d19a7c5738
 )
 
 // Fix CVE-2022-28948
@@ -205,7 +205,6 @@ require (
 	go.opentelemetry.io/otel v1.28.0 // indirect
 	go.opentelemetry.io/otel/metric v1.28.0 // indirect
 	go.opentelemetry.io/otel/trace v1.28.0 // indirect
-	go.starlark.net v0.0.0-20231121155337-90ade8b19d09 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.27.0 // indirect
