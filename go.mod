@@ -63,7 +63,6 @@ replace (
 	//sigs.k8s.io/kustomize/kyaml => sigs.k8s.io/kustomize/kyaml v0.14.2
 	sigs.k8s.io/kustomize/api => github.com/larhauga/kustomize/api v0.0.0-20230710085750-6a9599538585
 	sigs.k8s.io/kustomize/kyaml => github.com/larhauga/kustomize/kyaml v0.0.0-20230710085750-6a9599538585
-
 )
 
 // Fix CVE-2022-28948
@@ -207,6 +206,7 @@ require (
 	golang.org/x/crypto v0.10.0 // indirect
 	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/oauth2 v0.9.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.9.0 // indirect
 	golang.org/x/term v0.9.0 // indirect
 	golang.org/x/text v0.10.0 // indirect
@@ -231,3 +231,5 @@ require (
 	sigs.k8s.io/kustomize/kyaml v0.14.3 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 )
+
+replace github.com/fluxcd/pkg/ssa => github.com/chlunde/flux-pkg/ssa v0.0.0-20230801130837-f54d58916e23

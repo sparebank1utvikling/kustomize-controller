@@ -77,6 +77,7 @@ func main() {
 		eventsAddr            string
 		healthAddr            string
 		concurrent            int
+		concurrentDiffs       int
 		requeueDependency     time.Duration
 		clientOptions         runtimeClient.Options
 		kubeConfigOpts        runtimeClient.KubeConfigOptions
@@ -95,6 +96,7 @@ func main() {
 	flag.StringVar(&eventsAddr, "events-addr", "", "The address of the events receiver.")
 	flag.StringVar(&healthAddr, "health-addr", ":9440", "The address the health endpoint binds to.")
 	flag.IntVar(&concurrent, "concurrent", 4, "The number of concurrent kustomize reconciles.")
+	flag.IntVar(&concurrentDiffs, "concurrent-diffs", 4, "The number of concurrent diff goroutines per reconciler.")
 	flag.DurationVar(&requeueDependency, "requeue-dependency", 30*time.Second, "The interval at which failing dependencies are reevaluated.")
 	flag.BoolVar(&noRemoteBases, "no-remote-bases", false,
 		"Disallow remote bases usage in Kustomize overlays. When this flag is enabled, all resources must refer to local files included in the source artifact.")
@@ -215,6 +217,7 @@ func main() {
 		DependencyRequeueInterval: requeueDependency,
 		HTTPRetry:                 httpRetry,
 		RateLimiter:               runtimeCtrl.GetRateLimiter(rateLimiterOptions),
+		ConcurrentDiffs:           concurrentDiffs,
 	}); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", controllerName)
 		os.Exit(1)

@@ -91,6 +91,7 @@ type KustomizationReconciler struct {
 	NoRemoteBases         bool
 	DefaultServiceAccount string
 	KubeConfigOpts        runtimeClient.KubeConfigOptions
+	concurrentDiffs       int
 }
 
 // KustomizationReconcilerOptions contains options for the KustomizationReconciler.
@@ -98,6 +99,7 @@ type KustomizationReconcilerOptions struct {
 	HTTPRetry                 int
 	DependencyRequeueInterval time.Duration
 	RateLimiter               ratelimiter.RateLimiter
+	ConcurrentDiffs           int
 }
 
 func (r *KustomizationReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, opts KustomizationReconcilerOptions) error {
@@ -125,6 +127,7 @@ func (r *KustomizationReconciler) SetupWithManager(ctx context.Context, mgr ctrl
 		return fmt.Errorf("failed setting index fields: %w", err)
 	}
 
+	r.concurrentDiffs = opts.ConcurrentDiffs
 	r.requeueDependency = opts.DependencyRequeueInterval
 	r.statusManager = fmt.Sprintf("gotk-%s", r.ControllerName)
 	r.artifactFetcher = fetch.NewArchiveFetcher(
@@ -395,6 +398,7 @@ func (r *KustomizationReconciler) reconcile(
 		Field: r.ControllerName,
 		Group: kustomizev1.GroupVersion.Group,
 	})
+	resourceManager.SetConcurrency(r.concurrentDiffs)
 	resourceManager.SetOwnerLabels(objects, obj.GetName(), obj.GetNamespace())
 
 	// Update status with the reconciliation progress.
